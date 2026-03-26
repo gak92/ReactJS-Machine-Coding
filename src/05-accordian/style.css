@@ -1,0 +1,39 @@
+.accordian {
+  /* border: 1px solid #ccc; */
+  margin: 10px;
+  padding: 10px;
+  background-color: transparent;
+  width: 500px;
+  height: 50px;
+  overflow: hidden;
+  transition: height 0.5s ease-in-out;
+}
+
+.accordian[data-expanded="true"] {
+  height: 400px;
+}
+
+.heading {
+  width: 500px;
+  cursor: pointer;
+  background-color: lightsalmon;
+  border-radius: 5px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.heading span[data-expanded="true"] {
+  transform: rotate(90deg);
+  display: inline-block;
+}
+
+.content {
+  /* display: none; */
+  background-color: darkgray;
+  border-radius: 5px;
+}
+
+.content.show {
+  display: block;
+}

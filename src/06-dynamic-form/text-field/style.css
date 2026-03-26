@@ -1,0 +1,14 @@
+.text-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.text-field sup {
+  color: red;
+}
+
+.error {
+  color: red;
+  font-size: 0.8rem;
+}

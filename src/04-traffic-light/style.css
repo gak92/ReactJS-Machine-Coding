@@ -1,0 +1,15 @@
+.traffic-light {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  /* width: 100px; */
+  background-color: black;
+  padding: 1rem;
+}
+
+.light {
+  width: 100px;
+  height: 100px;
+  background-color: darkgray;
+  border-radius: 50%;
+}

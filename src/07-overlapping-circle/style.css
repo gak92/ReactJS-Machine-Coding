@@ -1,0 +1,18 @@
+.circle-comp {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  position: absolute;
+  background-color: green;
+  animation: animateCircle 1s ease-in-out;
+}
+
+@keyframes animateCircle {
+  0% {
+    transform: scale(0);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}

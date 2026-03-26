@@ -1,0 +1,20 @@
+Useful Links:
+https://medium.com/@sanchit0496/react-js-machine-coding-25-must-do-questions-with-solutions-344f47dee15d
+https://github.com/sanchit0496/reactjs-machine-coding-challenges?source=post_page-----344f47dee15d---------------------------------------
+https://medium.com/@sanjeev-singh/react-machine-coding-interview-guide-image-carousel-step-by-step-9e2b7bc261eb
+
+
+// ======================================
+// 1- Autocomplete
+// ======================================
+https://medium.com/@sanjeev-singh/react-machine-coding-interview-guide-autosuggest-component-91b8b20494c8
+https://medium.com/@lemonjai/autocomplete-tricky-interview-question-50-50-ee7d3cc55aa9
+
+AutoComplete TypeHead
+
+1. User should be able to type on the text field.
+2. If there are suggestion available, show them below text field.
+3. User can select option from the list.
+4. Handle No Suggestion found case
+5. Once Selection is made, suggestions should be hidden
+6. User should be able to clear the text field, with the help of a clear button. +7. Selected item should be shown differently then rest of the options.
