@@ -1,0 +1,138 @@
+/* ============================================================
+   Memory Game — Stylesheet
+   ============================================================
+   CONCEPT: 3D card-flip effect using CSS transforms.
+   The entire flip animation is CSS-only; React just toggles
+   data-* attributes, and CSS responds with transforms.
+
+   KEY CSS CONCEPTS USED:
+     • CSS Grid              — layout the card board
+     • transform-style: preserve-3d — enable true 3D space
+     • backface-visibility   — hide a face when it's rotated away
+     • rotateY(180deg)       — the actual flip transform
+     • transition            — smooth animated flip
+     • pointer-events: none  — disable clicks via CSS
+     • [data-attr="value"]   — attribute selectors as state hooks
+   ============================================================ */
+
+
+/* ── Board Layout ────────────────────────────────────────────
+   CSS Grid creates a 4-column layout automatically.
+   With 10 cards this gives: 2 full rows + 2 cards on the 3rd row.
+   `1fr` means each column takes equal available space.           */
+.memory-game {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem; /* spacing between cards */
+}
+
+
+/* ── Card Container ──────────────────────────────────────────
+   Each card is a 3D "stage" that flips in place.
+
+   IMPORTANT 3D SETUP:
+     position: relative     → allows .front/.back to be positioned
+                              absolutely inside this container.
+     transform-style: preserve-3d → tells the browser that child
+                              elements (.front, .back) live in the
+                              SAME 3D space as this container.
+                              Without this, the flip looks flat.
+     transition: transform  → animates the rotateY flip smoothly
+                              over 0.5 seconds.                    */
+.card {
+  width: 100px;
+  height: 100px;
+  border: 1px solid #ccc;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  position: relative;             /* anchor for absolute .front/.back */
+  transition: transform 0.5s ease; /* smooth 3D flip animation */
+  transform-style: preserve-3d;   /* enable 3D space for children */
+}
+
+
+/* ── Flip States (data-* attribute selectors) ────────────────
+   React sets these attributes dynamically based on game state.
+   CSS attribute selectors [attr="value"] react to those changes.
+
+   data-toggle="true" → card is actively selected (1st or 2nd click this turn)
+   data-active="true" → card is permanently matched (stays flipped forever)
+
+   Both cases apply the same 180° Y-axis rotation to reveal .back. */
+.card[data-toggle="true"] {
+  transform: rotateY(180deg); /* flip card to show emoji face */
+}
+
+.card[data-active="true"] {
+  transform: rotateY(180deg); /* keep permanently matched cards flipped */
+}
+
+
+/* ── Click Disabling ─────────────────────────────────────────
+   pointer-events: none removes the card from mouse/touch events.
+   React sets these to block unwanted interactions:
+
+   data-disabled="true"   → applied to the 1st selected card so
+                             the player can't click it again to
+                             falsely trigger a match with itself.
+
+   data-disable-all="true"→ applied to ALL cards once both the
+                             1st and 2nd cards are selected.
+                             Prevents clicking during the 2-second
+                             mismatch delay (when cards flip back). */
+.card[data-disabled="true"],
+.card[data-disable-all="true"] {
+  pointer-events: none; /* fully disables all mouse/touch interaction */
+}
+
+
+/* ── Card Front Face (face-down cover) ───────────────────────
+   The .front is the grey cover visible when the card is NOT flipped.
+   It starts at z-index:1 so it appears on top of .back by default.
+
+   backface-visibility: hidden → hides this face when it's rotated
+   180° away from the viewer (i.e., when the card is flipped).
+   Without this, you'd see a mirrored grey cover on top of the emoji. */
+.card .front {
+  width: 100%;
+  height: 100%;
+  background-color: #ccc;      /* grey cover = face-down card */
+  position: absolute;          /* overlap exactly over .back */
+  top: 0;
+  left: 0;
+  cursor: pointer;
+  z-index: 1;                  /* sits above .back by default */
+  backface-visibility: hidden; /* hide when rotated 180° away */
+}
+
+
+/* ── Card Back Face (emoji reveal) ──────────────────────────
+   The .back starts pre-rotated 180° so it faces away from the viewer.
+   When the parent .card rotates 180°, the .back rotates to face forward,
+   and .front rotates away (hidden by backface-visibility).
+
+   This is the core of the 3D flip trick:
+     Default state  → .front faces viewer,  .back faces away (hidden)
+     Flipped state  → .front faces away (hidden), .back faces viewer
+
+   backface-visibility: hidden → same as .front; hides this face
+   when it's rotated away (i.e., before the card is flipped).
+
+   transform: rotateY(180deg) → pre-rotates .back so it's initially
+   hidden and then "comes around" when the parent flips 180°.         */
+.card .back {
+  width: 100%;
+  height: 100%;
+  background-color: #fff;
+  font-size: 2rem;
+  position: absolute;          /* overlap exactly under .front */
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  backface-visibility: hidden; /* hide when rotated 180° away (before flip) */
+  transform: rotateY(180deg);  /* pre-rotate so it's behind .front initially */
+}
